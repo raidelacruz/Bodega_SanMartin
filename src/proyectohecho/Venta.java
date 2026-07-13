@@ -2,16 +2,19 @@ package proyectohecho;
 
 /**
  * Representa una venta ya concretada.
- * Se almacena en la Pila (historial de ventas) del sistema.
+ * Se almacena en la Pila (historial de ventas) del sistema
+ * y también en el historial de compras del Cliente correspondiente.
  */
 public class Venta {
     private int idVenta;
+    private Cliente cliente;
     private String producto;
     private int cantidad;
     private double total;
 
-    public Venta(int idVenta, String producto, int cantidad, double total) {
+    public Venta(int idVenta, Cliente cliente, String producto, int cantidad, double total) {
         this.idVenta = idVenta;
+        this.cliente = cliente;
         this.producto = producto;
         this.cantidad = cantidad;
         this.total = total;
@@ -19,6 +22,10 @@ public class Venta {
 
     public int getIdVenta() {
         return idVenta;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
     }
 
     public String getProducto() {
@@ -35,7 +42,6 @@ public class Venta {
 
     @Override
     public String toString() {
-        return "Venta #" + idVenta + " | " + producto +
-               " x" + cantidad + " | Total: S/ " + total;
+        return "Venta #" + idVenta + " | Cliente: " + cliente.getNombre() + " | " + producto + " x" + cantidad + " | Total: S/ " + total;
     }
 }

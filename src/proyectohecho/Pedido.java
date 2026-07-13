@@ -6,11 +6,11 @@ package proyectohecho;
  */
 public class Pedido {
     private int idPedido;
-    private String cliente;
+    private Cliente cliente;
     private int idProducto;
     private int cantidadSolicitada;
 
-    public Pedido(int idPedido, String cliente, int idProducto, int cantidadSolicitada) {
+    public Pedido(int idPedido, Cliente cliente, int idProducto, int cantidadSolicitada) {
         this.idPedido = idPedido;
         this.cliente = cliente;
         this.idProducto = idProducto;
@@ -21,7 +21,7 @@ public class Pedido {
         return idPedido;
     }
 
-    public String getCliente() {
+    public Cliente getCliente() {
         return cliente;
     }
 
@@ -35,7 +35,6 @@ public class Pedido {
 
     @Override
     public String toString() {
-        return "Pedido #" + idPedido + " | Cliente: " + cliente +
-               " | Producto ID: " + idProducto + " | Cantidad: " + cantidadSolicitada;
+        return "Pedido #" + idPedido + " | Cliente: " + cliente.getNombre() + " | Producto ID: " + idProducto + " | Cantidad: " + cantidadSolicitada;
     }
 }
