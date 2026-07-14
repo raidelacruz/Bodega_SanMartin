@@ -75,13 +75,14 @@ public class TiendaSistema {
                 case 10 -> verMatrizHorarios();
                 case 11 -> verArbolCategorias();
                 case 12 -> generarReporte();
-                case 13 -> System.out.println("Saliendo del sistema... ¡Hasta pronto!");
+                case 13 -> buscarProductoPorNombre();
+                case 14 -> System.out.println("Saliendo del sistema... ¡Hasta pronto!");
                 default -> System.out.println("Opción no válida. Intente nuevamente.");
             }
-            if (opcion != 13) {
+            if (opcion != 14) {
                 pausar();
             }
-        } while (opcion != 13);
+        } while (opcion != 14);
 
         sc.close();
     }
@@ -100,7 +101,8 @@ public class TiendaSistema {
         System.out.println("10. Ver matriz de horarios de empleados");
         System.out.println("11. Ver árbol de categorías de productos");
         System.out.println("12. Generar reporte de ventas");
-        System.out.println("13. Salir");
+        System.out.println("13. Buscar producto por nombre");
+        System.out.println("14. Salir");
     }
 
     // 1. Registrar producto (Vector)
@@ -309,6 +311,33 @@ public class TiendaSistema {
             if (p.getId() == id) return p;
         }
         return null;
+    }
+
+    // 13. Buscar producto por nombre (coincidencia parcial, sin distinguir mayúsculas/minúsculas)
+    static void buscarProductoPorNombre() {
+        if (inventario.isEmpty()) {
+            System.out.println("No hay productos registrados aún.");
+            return;
+        }
+        System.out.print("Nombre (o parte del nombre) a buscar: ");
+        String texto = sc.nextLine().trim().toLowerCase();
+
+        if (texto.isEmpty()) {
+            System.out.println("Debe ingresar algún texto para buscar.");
+            return;
+        }
+
+        System.out.println("\n-- Resultados de la búsqueda --");
+        boolean encontrado = false;
+        for (Producto p : inventario) {
+            if (p.getNombre().toLowerCase().contains(texto)) {
+                System.out.println(p);
+                encontrado = true;
+            }
+        }
+        if (!encontrado) {
+            System.out.println("No se encontró ningún producto que coincida con \"" + texto + "\".");
+        }
     }
 
     static Cliente buscarClientePorId(int id) {
