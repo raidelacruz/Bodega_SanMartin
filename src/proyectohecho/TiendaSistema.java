@@ -76,13 +76,15 @@ public class TiendaSistema {
                 case 11 -> verArbolCategorias();
                 case 12 -> generarReporte();
                 case 13 -> buscarProductoPorNombre();
-                case 14 -> System.out.println("Saliendo del sistema... ¡Hasta pronto!");
+                case 14 -> editarProducto();
+                case 15 -> eliminarProducto();
+                case 16 -> System.out.println("Saliendo del sistema... ¡Hasta pronto!");
                 default -> System.out.println("Opción no válida. Intente nuevamente.");
             }
-            if (opcion != 14) {
+            if (opcion != 16) {
                 pausar();
             }
-        } while (opcion != 14);
+        } while (opcion != 16);
 
         sc.close();
     }
@@ -102,7 +104,9 @@ public class TiendaSistema {
         System.out.println("11. Ver árbol de categorías de productos");
         System.out.println("12. Generar reporte de ventas");
         System.out.println("13. Buscar producto por nombre");
-        System.out.println("14. Salir");
+        System.out.println("14. Editar producto");
+        System.out.println("15. Eliminar producto");
+        System.out.println("16. Salir");
     }
 
     // 1. Registrar producto (Vector)
@@ -337,6 +341,94 @@ public class TiendaSistema {
         }
         if (!encontrado) {
             System.out.println("No se encontró ningún producto que coincida con \"" + texto + "\".");
+        }
+    }
+
+    // 14. Editar producto
+    static void editarProducto() {
+        if (inventario.isEmpty()) {
+            System.out.println("No hay productos registrados aún.");
+            return;
+        }
+        System.out.println("\n-- Inventario actual --");
+        for (Producto p : inventario) {
+            System.out.println(p);
+        }
+
+        int id = leerEntero("ID del producto a editar: ");
+        Producto p = buscarProductoPorId(id);
+        if (p == null) {
+            System.out.println("No existe un producto con ese ID.");
+            return;
+        }
+
+        System.out.println("Editando: " + p);
+        System.out.println("Deje el campo vacío y presione Enter para no modificarlo.");
+
+        System.out.print("Nuevo nombre [" + p.getNombre() + "]: ");
+        String nombre = sc.nextLine();
+        if (!nombre.isBlank()) {
+            p.setNombre(nombre);
+        }
+
+        System.out.print("Nuevo precio [" + p.getPrecio() + "]: ");
+        String precioTxt = sc.nextLine();
+        if (!precioTxt.isBlank()) {
+            try {
+                double precio = Double.parseDouble(precioTxt);
+                if (precio < 0) {
+                    System.out.println("El precio no puede ser negativo, se mantiene el valor anterior.");
+                } else {
+                    p.setPrecio(precio);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Valor no válido, se mantiene el precio anterior.");
+            }
+        }
+
+        System.out.print("Nueva cantidad en stock [" + p.getCantidad() + "]: ");
+        String cantidadTxt = sc.nextLine();
+        if (!cantidadTxt.isBlank()) {
+            try {
+                int cantidad = Integer.parseInt(cantidadTxt);
+                if (cantidad < 0) {
+                    System.out.println("El stock no puede ser negativo, se mantiene el valor anterior.");
+                } else {
+                    p.setCantidad(cantidad);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Valor no válido, se mantiene el stock anterior.");
+            }
+        }
+
+        System.out.println("Producto actualizado: " + p);
+    }
+
+    // 15. Eliminar producto
+    static void eliminarProducto() {
+        if (inventario.isEmpty()) {
+            System.out.println("No hay productos registrados aún.");
+            return;
+        }
+        System.out.println("\n-- Inventario actual --");
+        for (Producto p : inventario) {
+            System.out.println(p);
+        }
+
+        int id = leerEntero("ID del producto a eliminar: ");
+        Producto p = buscarProductoPorId(id);
+        if (p == null) {
+            System.out.println("No existe un producto con ese ID.");
+            return;
+        }
+
+        System.out.print("¿Seguro que desea eliminar \"" + p.getNombre() + "\"? (S/N): ");
+        String confirmacion = sc.nextLine().trim().toLowerCase();
+        if (confirmacion.equals("s") || confirmacion.equals("si")) {
+            inventario.remove(p);
+            System.out.println("Producto eliminado correctamente.");
+        } else {
+            System.out.println("Eliminación cancelada.");
         }
     }
 

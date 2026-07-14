@@ -41,8 +41,20 @@ public class Producto {
     }
 
     // ---------- Setters ----------
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
     // ---------- Lógica propia de la clase ----------
@@ -56,7 +68,6 @@ public class Producto {
 
     @Override
     public String toString() {
-        return "ID: " + id + " | " + nombre + " | Precio: S/ " + precio +
-               " | Stock: " + cantidad + " | Categoría: " + categoria;
+        return "ID: " + id + " | " + nombre + " | Precio: S/ " + precio + " | Stock: " + cantidad + " | Categoría: " + categoria;
     }
 }
