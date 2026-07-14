@@ -3,12 +3,11 @@ package proyectohecho;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
+/**
  * Representa un cliente de la tienda.
  * Se almacena en un Vector de clientes registrados del sistema
  * y guarda su propio historial de compras (Lista de Ventas).
  */
-
 public class Cliente {
     private int id;
     private String nombre;

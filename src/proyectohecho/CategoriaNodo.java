@@ -1,4 +1,5 @@
 package proyectohecho;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -34,53 +35,78 @@ public class CategoriaNodo {
             hijo.imprimir(indentacion + "   ");
         }
     }
-    public void listarCategorias(List<String> lista){
+
+    public void listarCategorias(List<String> lista) {
         lista.add(this.nombre);
         for (CategoriaNodo hijo : subcategorias) {
             hijo.listarCategorias(lista);
         }
     }
 
-    public String elegirCategoria(Scanner sc){
+    public String elegirCategoria(Scanner sc) {
         System.out.println("ELIGE LA CATEGORIA: ");
         for (int i = 0; i < subcategorias.size(); i++) {
-            System.out.println((i+1) + ". "+subcategorias.get(i).getNombre());
+            System.out.println((i + 1) + ". " + subcategorias.get(i).getNombre());
         }
         int seleccion = leerOpcion(sc, subcategorias.size());
-        CategoriaNodo elegido = subcategorias.get(seleccion-1);
+        CategoriaNodo elegido = subcategorias.get(seleccion - 1);
         return elegido.bajarNivel(sc);
     }
 
     private String bajarNivel(Scanner sc) {
         if (subcategorias.isEmpty()) {
             return this.nombre;
-        }    
-    
-    System.out.println("\"" + nombre + "\" tiene subcategorías. Elige una:");
-    System.out.println("0. " + nombre + " (sin subcategoría específica)");
-    for (int i = 0; i < subcategorias.size(); i++) {
-        System.out.println((i + 1) + ". " + subcategorias.get(i).getNombre());
-    }
-
-    int seleccion = leerOpcion(sc, subcategorias.size());
-    if (seleccion == 0) {
-        return this.nombre;
-    }
-
-    return subcategorias.get(seleccion - 1).bajarNivel(sc);
-    
-    }
-    private int leerOpcion(Scanner sc, int max) {
-    int seleccion = -1;
-    while (seleccion < 0 || seleccion > max) {
-        System.out.print("Ingresa el número: ");
-        while (!sc.hasNextInt()) {
-            System.out.print("Ingrese un número válido: ");
-            sc.next();
         }
-        seleccion = sc.nextInt();
-        sc.nextLine();
+
+        System.out.println("\"" + nombre + "\" tiene subcategorías. Elige una:");
+        System.out.println("0. " + nombre + " (sin subcategoría específica)");
+        for (int i = 0; i < subcategorias.size(); i++) {
+            System.out.println((i + 1) + ". " + subcategorias.get(i).getNombre());
+        }
+
+        int seleccion = leerOpcion(sc, subcategorias.size());
+        if (seleccion == 0) {
+            return this.nombre;
+        }
+
+        return subcategorias.get(seleccion - 1).bajarNivel(sc);
     }
-    return seleccion;
+
+    /**
+     * Permite navegar el árbol interactivamente para elegir bajo qué nodo
+     * se va a insertar una nueva categoría/subcategoría (buena práctica:
+     * evita tener que "hardcodear" categorías nuevas en el código).
+     */
+    public CategoriaNodo elegirNodoPadre(Scanner sc) {
+        if (subcategorias.isEmpty()) {
+            System.out.println("(\"" + nombre + "\" no tiene subcategorías todavía, se agregará aquí)");
+            return this;
+        }
+
+        System.out.println("\n¿Dónde quieres agregar la nueva categoría?");
+        System.out.println("0. Aquí mismo, dentro de \"" + nombre + "\"");
+        for (int i = 0; i < subcategorias.size(); i++) {
+            System.out.println((i + 1) + ". Entrar a \"" + subcategorias.get(i).getNombre() + "\"");
+        }
+
+        int seleccion = leerOpcion(sc, subcategorias.size());
+        if (seleccion == 0) {
+            return this;
+        }
+        return subcategorias.get(seleccion - 1).elegirNodoPadre(sc);
+    }
+
+    private int leerOpcion(Scanner sc, int max) {
+        int seleccion = -1;
+        while (seleccion < 0 || seleccion > max) {
+            System.out.print("Ingresa el número: ");
+            while (!sc.hasNextInt()) {
+                System.out.print("Ingrese un número válido: ");
+                sc.next();
+            }
+            seleccion = sc.nextInt();
+            sc.nextLine();
+        }
+        return seleccion;
     }
 }
